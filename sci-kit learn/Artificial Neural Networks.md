@@ -44,3 +44,34 @@ print("Outputs after training: ")
 print(outputs)
 
 ```
+
+
+Jacob method for solving Ax = b
+
+```
+import numpy as np
+
+def jacobi(A, b, x0, tol, maxiter):
+    n = len(x0)
+    x = np.zeros_like(x0)
+    for i in range(maxiter):
+        for j in range(n):
+            s = sum(A[j][k] * x0[k] for k in range(n) if k != j)
+            x[j] = (b[j] - s) / A[j][j]
+        if np.allclose(x, x0, rtol=tol):
+            return x
+        x0 = x
+    raise ValueError("Failed to converge after {} iterations".format(maxiter))
+
+# Example usage
+A = np.array([[3, 1], [1, 3]])
+b = np.array([9, 5])
+x0 = np.array([1, 1])
+tol = 1e-6
+maxiter = 1000
+
+x = jacobi(A, b, x0, tol, maxiter)
+print(x)  # Output: [2.0, 2.0]
+
+
+```
